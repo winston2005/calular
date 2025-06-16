@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicios de Programación</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            padding: 10px;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 10px;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #4a5568;
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            color: #718096;
+            font-size: 0.95rem;
+        }
+
+        .menu {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .menu-btn {
+            background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 15px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(79, 172, 254, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-decoration: none;
+            display: block;
+            text-align: center;
+        }
+
+        .menu-btn:hover, .menu-btn:active {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(79, 172, 254, 0.4);
+        }
+
+        .menu-btn.active {
+            background: linear-gradient(45deg, #fa709a 0%, #fee140 100%);
+            box-shadow: 0 6px 20px rgba(250, 112, 154, 0.4);
+        }
+
+        .ejercicio {
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .ejercicio.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .ejercicio h2 {
+            color: #2d3748;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #4a5568;
+            font-size: 0.95rem;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 16px; /* Evita zoom en iOS */
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: textfield;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #4facfe;
+            box-shadow: 0 0 15px rgba(79, 172, 254, 0.3);
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 8px 5px 8px 0;
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+            width: calc(50% - 5px);
+        }
+
+        .btn:hover, .btn:active {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-full {
+            width: 100%;
+            margin: 8px 0;
+        }
+
+        .btn-calc {
+            background: linear-gradient(45deg, #28a745 0%, #20c997 100%);
+            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.3);
+            width: calc(25% - 5px);
+            margin: 5px 2.5px;
+            padding: 10px 5px;
+            font-size: 0.9rem;
+        }
+
+        .btn-calc:hover, .btn-calc:active {
+            box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4);
+        }
+
+        .resultado {
+            margin-top: 20px;
+            padding: 18px;
+            background: linear-gradient(135deg, #667eea20, #764ba220);
+            border-left: 4px solid #667eea;
+            border-radius: 12px;
+            min-height: 50px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .tabla-resultado {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .tabla-item {
+            background: rgba(102, 126, 234, 0.1);
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .home-btn {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(45deg, #fa709a 0%, #fee140 100%);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(250, 112, 154, 0.3);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            font-size: 0.85rem;
+        }
+
+        .home-btn:hover, .home-btn:active {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(250, 112, 154, 0.4);
+        }
+
+        .current-year {
+            font-size: 0.85rem;
+            color: #718096;
+            margin-top: 5px;
+        }
+
+        .warning-factorial {
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 0.85rem;
+            color: #856404;
+        }
+
+        .calc-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+
+        /* Optimizaciones específicas para móvil */
+        @media (max-width: 480px) {
+            .container {
+                padding: 5px;
+            }
+            
+            header {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 1.6rem;
+            }
+            
+            .ejercicio {
+                padding: 20px;
+            }
+            
+            .btn {
+                width: 100%;
+                margin: 5px 0;
+            }
+            
+            .btn-calc {
+                width: calc(50% - 5px);
+                margin: 5px 2.5px;
+            }
+            
+            input[type="number"] {
+                padding: 12px;
+            }
+        }
+
+        /* Evitar zoom en inputs en iOS */
+        @supports (-webkit-touch-callout: none) {
+            input[type="number"] {
+                font-size: 16px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="home-btn" onclick="mostrarMenu()">🏠 Inicio</button>
+    
+    <div class="container">
+        <header>
+            <h1>🚀 Ejercicios de Programación</h1>
+            <p class="subtitle">Optimizado para dispositivos móviles</p>
+        </header>
+
+        <div id="menu" class="menu">
+            <button class="menu-btn" onclick="mostrarEjercicio('calculadora')">
+                🔢 Calculadora Básica
+            </button>
+            <button class="menu-btn" onclick="mostrarEjercicio('edad')">
+                👤 Verificar Edad por Año
+            </button>
+            <button class="menu-btn" onclick="mostrarEjercicio('factorial')">
+                🔢 Factorial
+            </button>
+            <button class="menu-btn" onclick="mostrarEjercicio('tabla')">
+                📊 Tabla de Multiplicar
+            </button>
+            <button class="menu-btn" onclick="mostrarEjercicio('modulo')">
+                ➗ Módulo de Números
+            </button>
+        </div>
+
+        <!-- Nueva Calculadora Básica -->
+        <div id="calculadora" class="ejercicio">
+            <h2>🔢 Calculadora Básica</h2>
+            <div class="input-group">
+                <label for="inputNum1">Primer número:</label>
+                <input type="number" id="inputNum1" placeholder="Ej: 15">
+            </div>
+            <div class="input-group">
+                <label for="inputNum2">Segundo número:</label>
+                <input type="number" id="inputNum2" placeholder="Ej: 8">
+            </div>
+            <div class="calc-buttons">
+                <button class="btn btn-calc" onclick="calcular('suma')">➕ Sumar</button>
+                <button class="btn btn-calc" onclick="calcular('resta')">➖ Restar</button>
+                <button class="btn btn-calc" onclick="calcular('multiplicacion')">✖️ Multiplicar</button>
+                <button class="btn btn-calc" onclick="calcular('division')">➗ Dividir</button>
+            </div>
+            <button class="btn btn-full" onclick="limpiarCalculadora()">🧹 Limpiar</button>
+            <div id="resultadoCalculadora" class="resultado"></div>
+        </div>
+
+        <!-- Ejercicio 1: Verificar Edad por Año de Nacimiento -->
+        <div id="edad" class="ejercicio">
+            <h2>👤 Verificador de Edad</h2>
+            <div class="input-group">
+                <label for="inputAnio">Año de nacimiento:</label>
+                <input type="number" id="inputAnio" placeholder="Ej: 1995" min="1900" max="2024">
+                <div class="current-year">Año actual: <span id="anioActual"></span></div>
+            </div>
+            <button class="btn btn-full" onclick="verificarEdad()">Calcular Edad</button>
+            <button class="btn btn-full" onclick="limpiarEdad()">Limpiar</button>
+            <div id="resultadoEdad" class="resultado"></div>
+        </div>
+
+        <!-- Ejercicio 2: Factorial -->
+        <div id="factorial" class="ejercicio">
+            <h2>🔢 Calculadora de Factorial</h2>
+            <div class="input-group">
+                <label for="inputFactorial">Ingresa un número:</label>
+                <input type="number" id="inputFactorial" placeholder="Ej: 50" min="0" max="170">
+                <div class="warning-factorial">
+                    ⚠️ Para números muy grandes (>100), el cálculo puede tomar un momento
+                </div>
+            </div>
+            <button class="btn" onclick="calcularFactorial()">Calcular</button>
+            <button class="btn" onclick="limpiarFactorial()">Limpiar</button>
+            <div id="resultadoFactorial" class="resultado"></div>
+        </div>
+
+        <!-- Ejercicio 3: Tabla de Multiplicar -->
+        <div id="tabla" class="ejercicio">
+            <h2>📊 Tabla de Multiplicar</h2>
+            <div class="input-group">
+                <label for="inputTabla">Número para la tabla:</label>
+                <input type="number" id="inputTabla" placeholder="Ej: 7" min="1" max="20">
+            </div>
+            <button class="btn" onclick="generarTabla()">Generar</button>
+            <button class="btn" onclick="limpiarTabla()">Limpiar</button>
+            <div id="resultadoTabla" class="resultado"></div>
+        </div>
+
+        <!-- Ejercicio 4: Módulo -->
+        <div id="modulo" class="ejercicio">
+            <h2>➗ Calculadora de Módulo</h2>
+            <div class="input-group">
+                <label for="inputDividendo">Dividendo:</label>
+                <input type="number" id="inputDividendo" placeholder="Ej: 17">
+            </div>
+            <div class="input-group">
+                <label for="inputDivisor">Divisor:</label>
+                <input type="number" id="inputDivisor" placeholder="Ej: 3" min="1">
+            </div>
+            <button class="btn" onclick="calcularModulo()">Calcular</button>
+            <button class="btn" onclick="limpiarModulo()">Limpiar</button>
+            <div id="resultadoModulo" class="resultado"></div>
+        </div>
+    </div>
+
+    <script>
+        // Inicializar la aplicación
+        window.onload = function() {
+            // Mostrar año actual
+            const anioActual = new Date().getFullYear();
+            document.getElementById('anioActual').textContent = anioActual;
+        };
+
+        function mostrarMenu() {
+            const ejercicios = document.querySelectorAll('.ejercicio');
+            ejercicios.forEach(ejercicio => {
+                ejercicio.classList.remove('active');
+            });
+            
+            document.getElementById('menu').style.display = 'flex';
+            
+            const botones = document.querySelectorAll('.menu-btn');
+            botones.forEach(btn => btn.classList.remove('active'));
+        }
+
+        function mostrarEjercicio(nombreEjercicio) {
+            document.getElementById('menu').style.display = 'none';
+            
+            const ejercicios = document.querySelectorAll('.ejercicio');
+            ejercicios.forEach(ejercicio => {
+                ejercicio.classList.remove('active');
+            });
+            
+            document.getElementById(nombreEjercicio).classList.add('active');
+        }
+
+        // Nueva función: Calculadora Básica
+        function calcular(operacion) {
+            const num1 = parseFloat(document.getElementById('inputNum1').value);
+            const num2 = parseFloat(document.getElementById('inputNum2').value);
+            const resultado = document.getElementById('resultadoCalculadora');
+            
+            if (isNaN(num1) || isNaN(num2)) {
+                resultado.innerHTML = '<span style="color: #e53e3e;">⚠️ Por favor, ingresa números válidos en ambos campos.</span>';
+                return;
+            }
+            
+            let operacionTexto, simbolo, resultadoCalculo;
+            
+            switch (operacion) {
+                case 'suma':
+                    resultadoCalculo = num1 + num2;
+                    simbolo = '+';
+                    operacionTexto = 'Suma';
+                    break;
+                case 'resta':
+                    resultadoCalculo = num1 - num2;
+                    simbolo = '-';
+                    operacionTexto = 'Resta';
+                    break;
+                case 'multiplicacion':
+                    resultadoCalculo = num1 * num2;
+                    simbolo = '×';
+                    operacionTexto = 'Multiplicación';
+                    break;
+                case 'division':
+                    if (num2 === 0) {
+                        resultado.innerHTML = '<span style="color: #e53e3e;">⚠️ No se puede dividir entre cero.</span>';
+                        return;
+                    }
+                    resultadoCalculo = num1 / num2;
+                    simbolo = '÷';
+                    operacionTexto = 'División';
+                    break;
+                default:
+                    return;
+            }
+            
+            // Formatear el resultado
+            const resultadoFormateado = Number.isInteger(resultadoCalculo) 
+                ? resultadoCalculo.toString() 
+                : resultadoCalculo.toFixed(6).replace(/\.?0+$/, '');
+            
+            resultado.innerHTML = `
+                <strong>🧮 ${operacionTexto}:</strong><br><br>
+                <div style="font-size: 1.2em; text-align: center; background: rgba(56, 161, 105, 0.1); padding: 15px; border-radius: 8px;">
+                    ${num1} ${simbolo} ${num2} = <span style="color: #38a169; font-weight: bold;">${resultadoFormateado}</span>
+                </div>
+                ${operacion === 'division' && !Number.isInteger(resultadoCalculo) ? 
+                    `<div style="font-size: 0.85em; color: #718096; margin-top: 10px; text-align: center;">💡 Resultado redondeado a 6 decimales</div>` : ''}
+            `;
+        }
+
+        function limpiarCalculadora() {
+            document.getElementById('inputNum1').value = '';
+            document.getElementById('inputNum2').value = '';
+            document.getElementById('resultadoCalculadora').innerHTML = '';
+        }
+
+        // Ejercicio 1: Verificar Edad por Año de Nacimiento
+        function verificarEdad() {
+            const anioNacimiento = parseInt(document.getElementById('inputAnio').value);
+            const resultado = document.getElementById('resultadoEdad');
+            const anioActual = new Date().getFullYear();
+            
+            if (isNaN(anioNacimiento) || anioNacimiento < 1900 || anioNacimiento > anioActual) {
+                resultado.innerHTML = '<span style="color: #e53e3e;">⚠️ Por favor, ingresa un año válido entre 1900 y ' + anioActual + '.</span>';
+                return;
+            }
+            
+            const edad = anioActual - anioNacimiento;
+            const proximoCumple = new Date().getMonth() < 11 ? '' : ' (o ' + (edad + 1) + ' si ya cumpliste años este año)';
+            
+            if (edad >= 18) {
+                resultado.innerHTML = `
+                    <span style="color: #38a169;">
+                        ✅ <strong>Naciste en ${anioNacimiento}</strong><br>
+                        Tienes <strong>${edad} años</strong>${proximoCumple}<br>
+                        Eres <strong>mayor de edad</strong> 🎉
+                    </span>
+                `;
+            } else {
+                resultado.innerHTML = `
+                    <span style="color: #d69e2e;">
+                        👶 <strong>Naciste en ${anioNacimiento}</strong><br>
+                        Tienes <strong>${edad} años</strong>${proximoCumple}<br>
+                        Eres <strong>menor de edad</strong>
+                    </span>
+                `;
+            }
+        }
+
+        function limpiarEdad() {
+            document.getElementById('inputAnio').value = '';
+            document.getElementById('resultadoEdad').innerHTML = '';
+        }
+
+        // Función auxiliar para formatear números grandes
+        function formatearNumeroGrande(numero) {
+            const numeroStr = numero.toString();
+            if (numeroStr.length <= 15) {
+                return numero.toLocaleString();
+            }
+            
+            // Para números muy grandes, mostrar en notación científica
+            if (numero > 1e100) {
+                return numero.toExponential(3);
+            }
+            
+            return numeroStr;
+        }
+
+        // Función para calcular factorial de números grandes usando BigInt
+        function calcularFactorialGrande(n) {
+            if (n === 0 || n === 1) return BigInt(1);
+            
+            let result = BigInt(1);
+            for (let i = 2; i <= n; i++) {
+                result *= BigInt(i);
+            }
+            return result;
+        }
+
+        // Ejercicio 2: Factorial mejorado para números grandes
+        function calcularFactorial() {
+            const numero = parseInt(document.getElementById('inputFactorial').value);
+            const resultado = document.getElementById('resultadoFactorial');
+            
+            if (isNaN(numero) || numero < 0) {
+                resultado.innerHTML = '<span style="color: #e53e3e;">⚠️ Ingresa un número entero positivo.</span>';
+                return;
+            }
+            
+            if (numero > 170) {
+                resultado.innerHTML = '<span style="color: #e53e3e;">⚠️ Número demasiado grande. Máximo 170 para evitar errores de desbordamiento.</span>';
+                return;
+            }
+
+            // Mostrar advertencia para números grandes
+            if (numero > 50) {
+                resultado.innerHTML = '<span style="color: #d69e2e;">🔄 Calculando factorial de número grande, por favor espera...</span>';
+                // Usar setTimeout para no bloquear la UI
+                setTimeout(() => {
+                    calcularFactorialInterno(numero, resultado);
+                }, 100);
+            } else {
+                calcularFactorialInterno(numero, resultado);
+            }
+        }
+
+        function calcularFactorialInterno(numero, resultado) {
+            let factorial, proceso;
+            
+            if (numero === 0 || numero === 1) {
+                factorial = BigInt(1);
+                proceso = `${numero}! = 1`;
+            } else {
+                // Para números pequeños, mostrar el proceso completo
+                if (numero <= 10) {
+                    factorial = BigInt(1);
+                    proceso = `${numero}! = `;
+                    for (let i = numero; i >= 1; i--) {
+                        factorial *= BigInt(i);
+                        proceso += i;
+                        if (i > 1) proceso += ' × ';
+                    }
+                } else {
+                    // Para números grandes, solo calcular el resultado
+                    factorial = calcularFactorialGrande(numero);
+                    proceso = `${numero}! = (cálculo directo para número grande)`;
+                }
+            }
+            
+            const factorialStr = factorial.toString();
+            const cantidadDigitos = factorialStr.length;
+            
+            // Formatear el resultado según el tamaño
+            let resultadoFormateado;
+            if (cantidadDigitos <= 50) {
+                // Número manejable, mostrar completo con formato
+                resultadoFormateado = factorialStr.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            } else {
+                // Número muy grande, mostrar inicio y fin con elipsis
+                const inicio = factorialStr.substring(0, 20);
+                const fin = factorialStr.substring(factorialStr.length - 20);
+                resultadoFormateado = `${inicio}...${fin}`;
+            }
+            
+            resultado.innerHTML = `
+                <strong>🔢 Resultado:</strong><br>
+                ${proceso}<br><br>
+                <div style="background: rgba(56, 161, 105, 0.1); padding: 15px; border-radius: 8px; margin: 10px 0;">
+                    <div style="color: #38a169; font-size: 1.1em; font-weight: bold; margin-bottom: 10px;">
+                        = ${resultadoFormateado}
+                    </div>
+                    <div style="font-size: 0.9em; color: #4a5568;">
+                        📊 <strong>Estadísticas:</strong><br>
+                        • Cantidad de dígitos: <strong>${cantidadDigitos.toLocaleString()}</strong><br>
+                        ${cantidadDigitos > 50 ? '• Número truncado para visualización<br>' : ''}
+                        • Valor exacto guardado en memoria
+                    </div>
+                </div>
+                ${numero > 20 ? '<div style="font-size: 0.85em; color: #718096; margin-top: 10px;">💡 Los factoriales crecen exponencialmente. ¡' + numero + '! es un número verdaderamente enorme!</div>' : ''}
+            `;
+        }
+
+        function limpiarFactorial() {
+            document.getElementById('inputFactorial').value = '';
+            document.getElementById('resultadoFactorial').innerHTML = '';
+        }
+
+        // Ejercicio 3: Tabla de Multiplicar
+        function generarTabla() {
+            const numero = parseInt(document.getElementById('inputTabla').value);
+            const resultado = document.getElementById('resultadoTabla');
+            
+            if (isNaN(numero) || numero < 1) {
+                resultado.innerHTML = '<span style="color: #e53e3e;">⚠️ Ingresa un número positivo.</span>';
+                return;
+            }
+            
+            let tablaHTML = `<strong>📊 Tabla del ${numero}:</strong><br><br>`;
+            tablaHTML += '<div class="tabla-resultado">';
+            
+            for (let i = 1; i <= 10; i++) {
+                const producto = numero * i;
+                tablaHTML += `<div class="tabla-item">${numero} × ${i} = ${producto}</div>`;
+            }
+            
+            tablaHTML += '</div>';
+            resultado.innerHTML = tablaHTML;
+        }
+
+        function limpiarTabla() {
+            document.getElementById('inputTabla').value = '';
+            document.getElementById('resultadoTabla').innerHTML = '';
+        }
+
+        // Ejercicio 4: Módulo
+        function calcularModulo() {
+            const dividendo = parseInt(document.getElementById('inputDividendo').value);
+            const divisor = parseInt(document.getElementById('inputDivisor').value);
+            const resultado = document.getElementById('resultadoModulo');
+            
+            if (isNaN(dividendo) || isNaN(divisor)) {
+                resultado.innerHTML = '<span style="color: #e53e3e;">⚠️ Ingresa números válidos.</span>';
+                return;
+            }
+            
+            if (divisor === 0) {
+                resultado.innerHTML = '<span style="color: #e53e3e;">⚠️ No se puede dividir entre cero.</span>';
+                return;
+            }
+            
+            const modulo = dividendo % divisor;
+            const cociente = Math.floor(dividendo / divisor);
+            
+            resultado.innerHTML = `
+                <strong>➗ Resultado:</strong><br><br>
+                <div style="font-size: 1.1em; text-align: center;">
+                    ${dividendo} mod ${divisor} = <span style="color: #38a169; font-weight: bold;">${modulo}</span>
+                </div><br>
+                <div style="background: rgba(56, 161, 105, 0.1); padding: 12px; border-radius: 8px; font-size: 0.9em;">
+                    <strong>Explicación:</strong><br>
+                    ${dividendo} ÷ ${divisor} = ${cociente} (cociente)<br>
+                    Residuo = ${modulo}<br>
+                    Verificación: ${divisor} × ${cociente} + ${modulo} = ${(divisor * cociente) + modulo}
+                </div>
+            `;
+        }
+
+        function limpiarModulo() {
+            document.getElementById('inputDividendo').value = '';
+            document.getElementById('inputDivisor').value = '';
+            document.getElementById('resultadoModulo').innerHTML = '';
+        }
+
+        // Permitir Enter para ejecutar cálculos
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const activeEjercicio = document.querySelector('.ejercicio.active');
+                if (activeEjercicio) {
+                    const id = activeEjercicio.id;
+                    switch(id) {
+                        case 'calculadora':
+                            // Para la calculadora, hacer suma por defecto con Enter
+                            calcular('suma');
+                            break;
+                        case 'edad':
+                            verificarEdad();
+                            break;
+                        case 'factorial':
+                            calcularFactorial();
+                            break;
+                        case 'tabla':
+                            generarTabla();
+                            break;
+                        case 'modulo':
+                            calcularModulo();
+                            break;
+                    }
+                }
+            }
+        });
+
+        // Evitar comportamientos no deseados en móviles
+        document.addEventListener('touchstart', function() {}, {passive: true});
+        
+        // Prevenir zoom en inputs
+        document.addEventListener('touchend', function(e) {
+            if (e.target.tagName === 'INPUT') {
+                e.target.blur();
+                setTimeout(() => e.target.focus(), 100);
+            }
+        });
+    </script>
+</body>
+</html>73
